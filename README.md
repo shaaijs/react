@@ -1,3 +1,4 @@
+![](https://i.imgur.com/DBhvZ2I.jpg)
 # @shaai/react
 This is a React wrapper for Shaai. It returns a React component which can be placed wherever you want to show your blogs.
 
