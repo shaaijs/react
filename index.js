@@ -1,38 +1,41 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Shaai from '@shaai/shaai'
 import { convert } from 'html-element-to-react'
 
-export default class ShaaiReact extends React.Component {
-    constructor(props) {
-        this.state = {
-            currentDOM: null
+export default (Scroll) => {
+    class ShaaiReact extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = {
+                currentDOM: null
+            }
+            this.scroll = new Scroll(props.config)
+        }
+
+        componentDidMount() {
+            this.scroll.load(this.props.templates)
+            this.scroll.subscribe((dom) => {
+                dom && this.setState({ currentDOM: dom })
+            })
+        }
+
+        subscribe(cb) {
+            this.scroll.subscribe(cb)
+        }
+    
+        render() {
+            return(
+                <>
+                    { this.state.currentDOM && convert(this.state.currentDOM) }
+                </>
+            )
         }
     }
 
-    componentDidMount() {
-        let Scroll = Shaai(this.props.scroll || 'scroll-ink')
-        this.scroll = new Scroll(this.props.config)
+    ShaaiReact.propTypes = {
+        config: PropTypes.object.isRequired,
+        templates: PropTypes.object
     }
 
-    load(templates) {
-        this.scroll.load(templates)
-    }
-
-    subscribe(cb) {
-        this.scroll.subscribe(cb)
-    }
-
-    render() {
-        return(
-            <>
-                { convert(this.state.currentDOM) }
-            </>
-        )
-    }
-}
-
-ShaaiReact.propTypes = {
-    config: PropTypes.object,
-    scrollName: PropTypes.string
+    return ShaaiReact
 }

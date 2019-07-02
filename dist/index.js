@@ -9,8 +9,6 @@ var _react = _interopRequireDefault(require("react"));
 
 var _propTypes = _interopRequireDefault(require("prop-types"));
 
-var _shaai = _interopRequireDefault(require("@shaai/shaai"));
-
 var _htmlElementToReact = require("html-element-to-react");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -27,54 +25,63 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-var ShaaiReact =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(ShaaiReact, _React$Component);
+var _default = function _default(Scroll) {
+  var ShaaiReact =
+  /*#__PURE__*/
+  function (_React$Component) {
+    _inherits(ShaaiReact, _React$Component);
 
-  function ShaaiReact(props) {
-    var _this;
+    function ShaaiReact(props) {
+      var _this;
 
-    _classCallCheck(this, ShaaiReact);
+      _classCallCheck(this, ShaaiReact);
 
-    _this.state = {
-      currentDOM: null
-    };
-    return _possibleConstructorReturn(_this);
-  }
-
-  _createClass(ShaaiReact, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var Scroll = (0, _shaai["default"])(this.props.scroll || 'scroll-ink');
-      this.scroll = new Scroll(this.props.config);
+      _this = _possibleConstructorReturn(this, _getPrototypeOf(ShaaiReact).call(this, props));
+      _this.state = {
+        currentDOM: null
+      };
+      _this.scroll = new Scroll(props.config);
+      return _this;
     }
-  }, {
-    key: "load",
-    value: function load(templates) {
-      this.scroll.load(templates);
-    }
-  }, {
-    key: "subscribe",
-    value: function subscribe(cb) {
-      this.scroll.subscribe(cb);
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react["default"].createElement(_react["default"].Fragment, null, (0, _htmlElementToReact.convert)(this.state.currentDOM));
-    }
-  }]);
 
+    _createClass(ShaaiReact, [{
+      key: "componentDidMount",
+      value: function componentDidMount() {
+        var _this2 = this;
+
+        this.scroll.load(this.props.templates);
+        this.scroll.subscribe(function (dom) {
+          dom && _this2.setState({
+            currentDOM: dom
+          });
+        });
+      }
+    }, {
+      key: "subscribe",
+      value: function subscribe(cb) {
+        this.scroll.subscribe(cb);
+      }
+    }, {
+      key: "render",
+      value: function render() {
+        return _react["default"].createElement(_react["default"].Fragment, null, this.state.currentDOM && (0, _htmlElementToReact.convert)(this.state.currentDOM));
+      }
+    }]);
+
+    return ShaaiReact;
+  }(_react["default"].Component);
+
+  ShaaiReact.propTypes = {
+    config: _propTypes["default"].object.isRequired,
+    templates: _propTypes["default"].object
+  };
   return ShaaiReact;
-}(_react["default"].Component);
-
-exports["default"] = ShaaiReact;
-ShaaiReact.propTypes = {
-  config: _propTypes["default"].object,
-  scrollName: _propTypes["default"].string
 };
+
+exports["default"] = _default;
