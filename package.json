@@ -1,6 +1,6 @@
 {
   "name": "@shaai/react",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "React wrapper for Shaai",
   "main": "dist/index.js",
   "scripts": {
