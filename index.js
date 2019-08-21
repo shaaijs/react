@@ -9,7 +9,7 @@ export default (Scroll) => {
             this.state = {
                 currentDOM: null
             }
-            this.scroll = new Scroll(props.config)
+            this.scroll = new Scroll(props.match && props.match.path && props.match.path !== '/' ? { ...props.config, basePath: props.match.path } : props.config)
         }
 
         componentDidMount() {
